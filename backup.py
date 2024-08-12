@@ -20,7 +20,7 @@ class Config:
             print(f'{config_path} does not exist')
             print(f'copy config.example.json to {config_path} and fill in the values to get started')
             exit(1)
-
+        
         self._tokens = {}  # key is token name, value is token value
         for token in self._config['tokens']:
             if 'name' not in token or 'value' not in token:
@@ -40,6 +40,8 @@ class Config:
                 guild['type'] = 'export'
             else:
                 guild['type'] = 'exportguild'
+
+            if '
 
             if 'throttleHours' not in guild:
                 guild['throttleHours'] = 0
@@ -187,7 +189,8 @@ class CommandRunner:
                 if return_code == 0:
                     self.timestamps.set_timestamp(guild['guildId'], nowTimestamp)
                 else:
-                    print(f'  Error exporting {guild["guildName"]}. Does dce/DiscordChatExporter.Cli exist? Maybe there are no new messages? Check the logs above for more information.')
+                    script_directory = os.path.dirname(os.path.abspath(__file__))
+                    print(f'  Error exporting {guild["guildName"]}. Does {script_directory}/dce/DiscordChatExporter.Cli exist? Maybe there are no new messages? Check the logs above for more information.')
 
             else:
                 print("  dry run, not really running the command and not updating timestamps")
