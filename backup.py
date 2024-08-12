@@ -11,6 +11,8 @@ DRY_RUN = False
 def is_linux():
     return os.name == 'posix' and 'linux' in os.uname().sysname.lower()
 
+script_directory = os.path.dirname(os.path.abspath(__file__))
+
 class Config:
     def __init__(self, config_path='config.json'):
         try:
@@ -189,7 +191,6 @@ class CommandRunner:
                 if return_code == 0:
                     self.timestamps.set_timestamp(guild['guildId'], nowTimestamp)
                 else:
-                    script_directory = os.path.dirname(os.path.abspath(__file__))
                     print(f'  Error exporting {guild["guildName"]}. Does {script_directory}/dce/DiscordChatExporter.Cli exist? Maybe there are no new messages? Check the logs above for more information.')
 
             else:
