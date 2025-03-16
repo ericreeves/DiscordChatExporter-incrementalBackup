@@ -1,0 +1,11 @@
+services:
+  discord-chat-exporter-incremental:
+    container_name: discord-chat-exporter-incremental
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /mnt/cubehd4/discord-exporter/discord-chat-exporter-incremental:/out
+      - /mnt/cubehd4/discord-exporter/discord-chat-exporter-incremental/config.json:/opt/app/config.json
+    environment:
+      - DCE_TOKEN_NOLDBOT3000=lkjsaflkjsadflkjsadf
+    build:
+      context: .

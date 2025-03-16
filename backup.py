@@ -16,7 +16,7 @@ script_directory = os.path.dirname(os.path.abspath(__file__))
 class Config:
     def __init__(self, config_path='config.json'):
         try:
-            with open('config.json') as f:
+            with open(config_path) as f:
                 self._config = json.load(f)
         except FileNotFoundError:
             print(f'{config_path} does not exist')
@@ -42,8 +42,6 @@ class Config:
                 guild['type'] = 'export'
             else:
                 guild['type'] = 'exportguild'
-
-            if '
 
             if 'throttleHours' not in guild:
                 guild['throttleHours'] = 0
@@ -92,7 +90,7 @@ class Config:
 
 
 class Timestamps:
-    def __init__(self, timestamp_path='exports/metadata.json'):
+    def __init__(self, timestamp_path='/out/metadata.json'):
         self._timestampsGuilds = {}
         self._timestamp_path = timestamp_path
 
@@ -103,7 +101,7 @@ class Timestamps:
                     self._timestampsGuilds = metadata['lastExportsTimestamps']
 
         except FileNotFoundError:
-            print('exports/metadata.json does not exist, starting from scratch')
+            print('/out/metadata.json does not exist, starting from scratch')
             with open(timestamp_path, 'w', encoding='utf-8') as f:
                 json.dump({'lastExportsTimestamps': {}}, f)
 
@@ -153,11 +151,11 @@ class CommandRunner:
             if os.path.exists(f'dce/DiscordChatExporter.Cli.exe'):
                 dce_path = '"dce/DiscordChatExporter.Cli"'
                 common_args = f'--format Json --media --reuse-media --fuck-russia --markdown false'
-                custom_args = f'--token "{guild["tokenValue"]}" --media-dir "exports/{guild["guildName"]}/_media/" --output "exports/{guild["guildName"]}/{nowTimestampFolder}/"'
-            elif is_linux() and shutil.which('docker') is not None:
-                dce_path = f'docker run --rm -it -v "$(pwd)/exports/{guild["guildName"]}/_media:/out/{guild["guildName"]}/_media" -v "$(pwd)/exports/{guild["guildName"]}/{nowTimestampFolder}:/out/{guild["guildName"]}/{nowTimestampFolder}" tyrrrz/discordchatexporter:stable'
-                common_args = f'--format Json --media --reuse-media --fuck-russia --markdown false'
-                custom_args = f'--token "{guild["tokenValue"]}" --media-dir "{guild["guildName"]}/_media/" --output "{guild["guildName"]}/{nowTimestampFolder}/"'
+                custom_args = f'--token "{guild["tokenValue"]}" --media-dir "/out/{guild["guildName"]}/_media/" --output "/out/{guild["guildName"]}/{nowTimestampFolder}/"'
+            elif is_linux() and os.path.exists(f'/opt/app/DiscordChatExporter.Cli'):
+                dce_path = '"/opt/app/DiscordChatExporter.Cli"'
+                common_args = f'--format Json --include-threads all --media --reuse-media --fuck-russia --markdown false'
+                custom_args = f'--partition 10mb --token "{guild["tokenValue"]}" --media-dir "/out/{guild["guildName"]}/_media/" --output "/out/{guild["guildName"]}/{nowTimestampFolder}/"'
             else:
                 print("#########################################################################################")
                 print('# DiscordChatExporter dependency not found!                                             #')
@@ -200,9 +198,8 @@ class CommandRunner:
 
 
 def main():
-    shutil.os.makedirs('exports', exist_ok=True)
-    timestamps = Timestamps(timestamp_path='exports/metadata.json')
-    config = Config(config_path='config.json')
+    timestamps = Timestamps(timestamp_path='/out/metadata.json')
+    config = Config(config_path='/out/config.json')
     command_runner = CommandRunner(config=config, timestamps=timestamps)
     command_runner.export()
 
