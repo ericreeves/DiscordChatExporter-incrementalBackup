@@ -3,6 +3,7 @@ name: Build and Publish Docker Image
 on:
   push:
     paths:
+      - "backup.py"
       - "Dockerfile"
       - ".github/workflows/build-and-publish-docker-image.yml"
 
