@@ -4,5 +4,5 @@ RUN apk add --no-cache python3 py3-pip
 
 COPY backup.py /opt/app/
 
-ENTRYPOINT [ "/opt/app/backup.py" ]
+ENTRYPOINT [ "python3", "/opt/app/backup.py" ]
 
