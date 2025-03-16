@@ -154,7 +154,7 @@ class CommandRunner:
                 custom_args = f'--token "{guild["tokenValue"]}" --media-dir "/out/{guild["guildName"]}/_media/" --output "/out/{guild["guildName"]}/{nowTimestampFolder}/"'
             elif is_linux() and os.path.exists(f'/opt/app/DiscordChatExporter.Cli'):
                 dce_path = '"/opt/app/DiscordChatExporter.Cli"'
-                common_args = f'--format Json --include-threads all --media --reuse-media --fuck-russia --markdown false'
+                common_args = f'--format Json --media --reuse-media --fuck-russia --markdown false'
                 custom_args = f'--partition 10mb --token "{guild["tokenValue"]}" --media-dir "/out/{guild["guildName"]}/_media/" --output "/out/{guild["guildName"]}/{nowTimestampFolder}/"'
             else:
                 print("#########################################################################################")
