@@ -62,6 +62,12 @@ class Config:
         else:
             self.outputpath = self._config['dce']['outputPath']
 
+        if 'parallel' not in self._config['dce']:
+            print(f'Parallel not configured')
+            exit(1)
+        else:
+            self.parallel = self._config['dce']['parallel']
+
     def validate_guild(self, guild) -> None:
         """
         print helpful error messages if guild config is not valid
@@ -161,7 +167,7 @@ class CommandRunner:
 
             if os.path.exists(self.config.clipath):
                 dce_path = self.config.clipath
-                common_args = f'--format Json --media --reuse-media --fuck-russia --markdown false'
+                common_args = f'--format Json --media --reuse-media --fuck-russia --markdown false --parallel {self.config.parallel}'
                 custom_args = f'--token "{guild["tokenValue"]}" --media-dir "{self.config.outputpath}/{guild["guildName"]}/_media/" --output "{self.config.outputpath}/{guild["guildName"]}/{nowTimestampFolder}/"'
                 if "after" in guild:
                     custom_args += f' --after "{guild["after"]}"'
