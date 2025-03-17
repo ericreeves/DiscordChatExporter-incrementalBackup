@@ -167,6 +167,8 @@ class CommandRunner:
                     custom_args += f' --after "{guild["after"]}"'
                 if "before" in guild:
                     custom_args += f' --before "{guild["before"]}"'
+                if "partition" in guild:
+                    custom_args += f' --partition "{guild["partition"]}"'
             else:
                 print("#########################################################################################")
                 print('# DiscordChatExporter.Cli not found!                                             #')

@@ -23,7 +23,8 @@
             "enabled": true,
             "throttleHours": 71.5,
             "after": "2021-09-15",
-            "before": "2025-01-01"
+            "before": "2025-01-01",
+            "partition": "10mb"
         },
         {
             "tokenName": "myaccount2",
