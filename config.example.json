@@ -1,4 +1,10 @@
 {
+    "dce": [
+        {
+            "cliPath": "/opt/app/DiscordChatExporter.Cli",
+            "outputPath": "/out"
+        }
+    ],
     "tokens": [
         {
             "name": "myaccount1",
@@ -15,7 +21,9 @@
             "guildId": "869237470565392384",
             "guildName": "tyrrrz",
             "enabled": true,
-            "throttleHours": 71.5
+            "throttleHours": 71.5,
+            "after": "2021-09-15",
+            "before": "2025-01-01"
         },
         {
             "tokenName": "myaccount2",

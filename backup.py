@@ -50,6 +50,17 @@ class Config:
 
         self.guilds = guilds
 
+        if cliPath not in self._config['dce']:
+            print(f'DCE CLI Path not configured')
+            exit(1)
+        else:
+            self.clipath = self._config['dce']['cliPath']
+
+        if outputPath not in self._config['dce']:
+            print(f'Output Path not configured')
+            exit(1)
+        else:
+            self.outputpath = self._config['dce']['outputPath']
 
     def validate_guild(self, guild) -> None:
         """
@@ -148,19 +159,18 @@ class CommandRunner:
                     print(f'  Skipping export because throttleHours is set to {guild["throttleHours"]} hours')
                     continue
 
-            if os.path.exists(f'dce/DiscordChatExporter.Cli.exe'):
-                dce_path = '"dce/DiscordChatExporter.Cli"'
+            if os.path.exists(self.config.clipath):
+                dce_path = self.config.clipath
                 common_args = f'--format Json --media --reuse-media --fuck-russia --markdown false'
-                custom_args = f'--token "{guild["tokenValue"]}" --media-dir "/out/{guild["guildName"]}/_media/" --output "/out/{guild["guildName"]}/{nowTimestampFolder}/"'
-            elif is_linux() and os.path.exists(f'/opt/app/DiscordChatExporter.Cli'):
-                dce_path = '"/opt/app/DiscordChatExporter.Cli"'
-                common_args = f'--format Json --media --reuse-media --fuck-russia --markdown false'
-                custom_args = f'--partition 10mb --token "{guild["tokenValue"]}" --media-dir "/out/{guild["guildName"]}/_media/" --output "/out/{guild["guildName"]}/{nowTimestampFolder}/"'
+                custom_args = f'--token "{guild["tokenValue"]}" --media-dir "{self.config.outputpath}/{guild["guildName"]}/_media/" --output "{self.config.outputpath}/{guild["guildName"]}/{nowTimestampFolder}/"'
+                if "after" in guild:
+                    custom_args += f' --after "{guild["after"]}"'
+                if "before" in guild:
+                    custom_args += f' --before "{guild["before"]}"'
             else:
                 print("#########################################################################################")
-                print('# DiscordChatExporter dependency not found!                                             #')
-                print('#   (Windows) extract CLI version of DiscordChatExporter into `dce` folder              #')
-                print('#   (Linux)   sudo apt install docker.io; docker pull tyrrrz/discordchatexporter:stable #')
+                print('# DiscordChatExporter.Cli not found!                                             #')
+                print('#   Ensure path is correctly defined in config.json')
                 print("#########################################################################################")
                 exit(1)
 
