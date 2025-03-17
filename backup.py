@@ -50,13 +50,13 @@ class Config:
 
         self.guilds = guilds
 
-        if cliPath not in self._config['dce']:
+        if 'cliPath' not in self._config['dce']:
             print(f'DCE CLI Path not configured')
             exit(1)
         else:
             self.clipath = self._config['dce']['cliPath']
 
-        if outputPath not in self._config['dce']:
+        if 'outputPath' not in self._config['dce']:
             print(f'Output Path not configured')
             exit(1)
         else:
