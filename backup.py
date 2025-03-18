@@ -157,10 +157,13 @@ class CommandRunner:
     def export(self) -> None:
         for guild in self.config.guilds:
             print(f'Guild {guild["guildName"]} ({guild["guildId"]}):')
+            if guild["channelId"]: 
+                print(f'ChannelId {guild["guildName"]} ({guild["channelId"]}):')
+                
             # export may take a long time. We want to know when the export started, so the next export won't miss any new messages created during the export
             nowTimestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")                   # example 2023-08-26T02:46:30.229228Z
             nowTimestampFolder = re.sub(r'\.\d+Z', '', nowTimestamp.replace(':', '-').replace('T', '--'))  # example 2023-08-26--02-46-30
-            last_export_timestamp = self.timestamps.get_timestamp(guild['guildId'])
+            last_export_timestamp = self.timestamps.get_timestamp(guild['channelId']) if 'channelId' in guild else self.timestamps.get_timestamp(guild['guildId'])
 
             # skip export if export was done recently (based on throttleHours from config)
             if last_export_timestamp is not None:
@@ -212,7 +215,10 @@ class CommandRunner:
                 print(f"  return code {return_code}")
 
                 if return_code == 0:
-                    self.timestamps.set_timestamp(guild['guildId'], nowTimestamp)
+                    if 'channelId' in guild:
+                        self.timestamps.set_timestamp(guild['channelId'], nowTimestamp)
+                    else;
+                        self.timestamps.set_timestamp(guild['guildId'], nowTimestamp)
                 else:
                     print(f'  Error exporting {guild["guildName"]}. Does {script_directory}/dce/DiscordChatExporter.Cli exist? Maybe there are no new messages? Check the logs above for more information.')
 
