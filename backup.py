@@ -156,9 +156,10 @@ class CommandRunner:
 
     def export(self) -> None:
         for guild in self.config.guilds:
-            print(f'Guild {guild["guildName"]} ({guild["guildId"]}):')
             if guild["channelId"]: 
                 print(f'ChannelId {guild["guildName"]} ({guild["channelId"]}):')
+            else:
+                print(f'Guild {guild["guildName"]} ({guild["guildId"]}):')
                 
             # export may take a long time. We want to know when the export started, so the next export won't miss any new messages created during the export
             nowTimestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")                   # example 2023-08-26T02:46:30.229228Z
